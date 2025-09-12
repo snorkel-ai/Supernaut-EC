@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Supernaut-EC/static/css/main.9087f8a5.css",
+    "main.js": "/Supernaut-EC/static/js/main.10052c3b.js",
+    "static/js/453.2ed80ca8.chunk.js": "/Supernaut-EC/static/js/453.2ed80ca8.chunk.js",
+    "index.html": "/Supernaut-EC/index.html",
+    "main.9087f8a5.css.map": "/Supernaut-EC/static/css/main.9087f8a5.css.map",
+    "main.10052c3b.js.map": "/Supernaut-EC/static/js/main.10052c3b.js.map",
+    "453.2ed80ca8.chunk.js.map": "/Supernaut-EC/static/js/453.2ed80ca8.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9087f8a5.css",
+    "static/js/main.10052c3b.js"
+  ]
+}
