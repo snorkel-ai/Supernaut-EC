@@ -862,7 +862,7 @@
         "task_id": "e63283b9-1163-4adb-af75-14cdcddc7d93",
         "worker_id": "e5812509-ba26-46c8-afba-29ca4a26b8d0",
         "failure_type": "Instruction Retention",
-        "intent_category": "Information",
+        "intent_category": "Informational",
         "intent_subcategory": "General Conversation",
         "perceived_difficulty": "Slightly Subtle",
         "conversation": {
@@ -1262,7 +1262,7 @@
         "task_id": "8d2b2617-893d-407e-9e4b-1e1dc680e36e",
         "worker_id": "e5812509-ba26-46c8-afba-29ca4a26b8d0",
         "failure_type": "Instruction Retention",
-        "intent_category": "Information",
+        "intent_category": "Informational",
         "intent_subcategory": "Factual Queries",
         "perceived_difficulty": "Subtle",
         "conversation": {
@@ -1815,7 +1815,7 @@
         "task_id": "c03fa427-0f0b-4b83-bf3d-ffec49ad4e01",
         "worker_id": "28d84955-620b-49bf-b79b-516ec5c06677",
         "failure_type": "Course Correction",
-        "intent_category": "Information",
+        "intent_category": "Informational",
         "intent_subcategory": "Factual Queries",
         "perceived_difficulty": "Subtle",
         "conversation": {
@@ -2885,7 +2885,7 @@
         "task_id": "c639c682-ce2c-4eaa-8495-421e59543056",
         "worker_id": "d1d68b0c-b349-44c6-a57a-474bcc0a7adb",
         "failure_type": "Task Continuation",
-        "intent_category": "Information",
+        "intent_category": "Informational",
         "intent_subcategory": "Concept Explanation",
         "perceived_difficulty": "Slightly Subtle",
         "conversation": {
@@ -3707,7 +3707,7 @@
         "task_id": "a8ee895e-1eee-455c-923f-20cff6aaaa6c",
         "worker_id": "d1d68b0c-b349-44c6-a57a-474bcc0a7adb",
         "failure_type": "Course Correction",
-        "intent_category": "Information",
+        "intent_category": "Informational",
         "intent_subcategory": "Factual Queries",
         "perceived_difficulty": "Slightly Subtle",
         "conversation": {
@@ -4032,7 +4032,7 @@
         "task_id": "2eda51c7-9df6-45fb-95d5-180959c42134",
         "worker_id": "4df2e7de-cce8-4a09-9d87-fdbb473c6011",
         "failure_type": "Course Correction",
-        "intent_category": "Information",
+        "intent_category": "Informational",
         "intent_subcategory": "Factual Queries",
         "perceived_difficulty": "Very Obvious",
         "conversation": {
