@@ -46,7 +46,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: https://snorkel-ai.github.io/Supernaut-EC
     runs-on: ubuntu-latest
     needs: build
     steps:
