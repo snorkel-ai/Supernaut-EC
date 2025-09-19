@@ -93,6 +93,26 @@ const DetailedTaskView: React.FC<DetailedTaskViewProps> = ({ task, onBack }) => 
         <h2>Task Details</h2>
       </div>
 
+      {/* Notes Section - Only show for specific conversations */}
+      {(task.task_id.includes('shred-snow-course-correction') || task.task_id.includes('fifa-worldcup-task-continuation-1758255554531') || task.task_id.includes('chess-knight-task-continuation-1758255698826')) && (
+        <div className="notes-section">
+          <div className="notes-header">
+            <h3>📝 Notes</h3>
+          </div>
+          <div className="notes-content">
+            {task.task_id.includes('shred-snow-course-correction') && 
+              'PLEASE NOTE: This is not a fully complete and correct conversation. It is missing a secondary model response, a correction turn, and more. This is intended only to demonstrate a valid intent failure in the Course Correction domain.'
+            }
+            {task.task_id.includes('fifa-worldcup-task-continuation-1758255554531') && 
+              'PLEASE NOTE: This is not a perfect example, it is a model B only failure (which is not valid) and there is no edited response in that turn. Ratings are also missing. This is intended just to show a good Task Continuation failure.'
+            }
+            {task.task_id.includes('chess-knight-task-continuation-1758255698826') && 
+              'PLEASE NOTE: This is not a perfect example, there are no secondary model responses, ratings, only one grading guidance, and more. This is intended only to demonstrate a good Task Continuation failure.'
+            }
+          </div>
+        </div>
+      )}
+
       {/* Task Metadata */}
       <div className="task-metadata">
         <div className="info-item">

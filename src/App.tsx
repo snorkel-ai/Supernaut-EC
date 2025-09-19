@@ -44,10 +44,6 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [currentView, setCurrentView] = useState<'tasks' | 'guidelines'>('tasks');
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
-  
-  const ITEMS_PER_PAGE = 10;
-
   useEffect(() => {
     fetch('/data.json')
       .then(response => response.json())
@@ -61,137 +57,54 @@ function App() {
       });
   }, []);
 
-  const filteredTasks = tasks; // No filtering needed since we removed search
-
-  // Group tasks hierarchically
-  const groupedTasks = filteredTasks.reduce((groups: any, task) => {
+  // Group tasks by failure type for flat organized display
+  const groupedTasks = tasks.reduce((groups: any, task) => {
     const failureType = task.failure_type || 'Unknown Failure Type';
-    const category = task.intent_category || 'Unknown Category';
-    const subcategory = task.intent_subcategory || 'Unknown Subcategory';
-    
     if (!groups[failureType]) {
-      groups[failureType] = {};
+      groups[failureType] = [];
     }
-    if (!groups[failureType][category]) {
-      groups[failureType][category] = {};
-    }
-    if (!groups[failureType][category][subcategory]) {
-      groups[failureType][category][subcategory] = [];
-    }
-    
-    groups[failureType][category][subcategory].push(task);
+    groups[failureType].push(task);
     return groups;
   }, {});
-
-  // Debug: Count total tasks in groups
-  const totalTasksInGroups = Object.values(groupedTasks).reduce((total: number, failureTypes: any) => {
-    return total + Object.values(failureTypes).reduce((ftTotal: number, categories: any) => {
-      return ftTotal + Object.values(categories).reduce((catTotal: number, tasks: any) => {
-        return catTotal + tasks.length;
-      }, 0);
-    }, 0);
-  }, 0);
-
-  const toggleGroup = (groupKey: string) => {
-    const newExpanded = new Set(expandedGroups);
-    if (newExpanded.has(groupKey)) {
-      newExpanded.delete(groupKey);
-    } else {
-      newExpanded.add(groupKey);
-    }
-    setExpandedGroups(newExpanded);
-  };
 
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">{error}</div>;
 
   const renderTasksView = () => (
     <>
-
-      <div className="task-groups">
+      <div className="tasks-flat-view">
         {Object.keys(groupedTasks).map(failureType => (
-          <div key={failureType} className="failure-type-group">
-            <div 
-              className="group-header failure-type-header"
-              onClick={() => toggleGroup(`failure-${failureType}`)}
-            >
-              <span className="group-title">{failureType}</span>
-              <span className="task-count">({Object.values(groupedTasks[failureType]).reduce((count: number, categories: any) => count + Object.values(categories).flat().length, 0)} tasks)</span>
-              <span className="expand-icon">
-                {expandedGroups.has(`failure-${failureType}`) ? '▼' : '▶'}
-              </span>
-            </div>
+          <div key={failureType} className="failure-type-section">
+            <h2 className="section-header">{failureType}</h2>
             
-            {expandedGroups.has(`failure-${failureType}`) && (
-              <div className="group-content">
-                {Object.keys(groupedTasks[failureType]).map(category => (
-                  <div key={category} className="category-group">
-                    <div 
-                      className="group-header category-header"
-                      onClick={() => toggleGroup(`category-${failureType}-${category}`)}
-                    >
-                      <span className="group-title">{category}</span>
-                      <span className="task-count">({Object.values(groupedTasks[failureType][category]).reduce((count: number, tasks: any) => count + tasks.length, 0)} tasks)</span>
-                      <span className="expand-icon">
-                        {expandedGroups.has(`category-${failureType}-${category}`) ? '▼' : '▶'}
-                      </span>
+            <div className="task-list">
+              {groupedTasks[failureType].map((task: Task) => (
+                <div key={task.task_id} className="task-item">
+                  <div 
+                    className="task-header" 
+                    onClick={() => setSelectedTask(task)}
+                  >
+                    <div className="task-meta-line">
+                      <span className="category-tag">{task.intent_category}</span>
+                      <span className="subcategory-tag">{task.intent_subcategory}</span>
+                      <span className="difficulty-tag">{task.perceived_difficulty}</span>
                     </div>
-                    
-                    {expandedGroups.has(`category-${failureType}-${category}`) && (
-                      <div className="group-content">
-                        {Object.keys(groupedTasks[failureType][category]).map(subcategory => (
-                          <div key={subcategory} className="subcategory-group">
-                            <div 
-                              className="group-header subcategory-header"
-                              onClick={() => toggleGroup(`subcategory-${failureType}-${category}-${subcategory}`)}
-                            >
-                              <span className="group-title">{subcategory}</span>
-                              <span className="task-count">({groupedTasks[failureType][category][subcategory].length} tasks)</span>
-                              <span className="expand-icon">
-                                {expandedGroups.has(`subcategory-${failureType}-${category}-${subcategory}`) ? '▼' : '▶'}
-                              </span>
-                            </div>
-                            
-                            {expandedGroups.has(`subcategory-${failureType}-${category}-${subcategory}`) && (
-                              <div className="group-content">
-                                <div className="task-list">
-                                  {groupedTasks[failureType][category][subcategory].map((task: Task) => (
-                                    <div key={task.task_id} className="task-item">
-                                      <div 
-                                        className="task-header" 
-                                        onClick={() => setSelectedTask(task)}
-                                      >
-                                        <h3 className="task-prompt">
-                                          {task.conversation?.turns?.[0]?.messages?.[0]?.content || task.task_id}
-                                        </h3>
-                                        <div className="task-id-small">
-                                          {task.task_id}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    <h3 className="task-prompt">
+                      {task.conversation?.turns?.[0]?.messages?.[0]?.content || task.task_id}
+                    </h3>
+                    <div className="task-id-small">
+                      {task.task_id}
+                    </div>
                   </div>
-                ))}
-              </div>
-            )}
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
 
       <div className="task-summary">
-        <p>Total filtered tasks: {filteredTasks.length} | Tasks in groups: {totalTasksInGroups}</p>
-        {filteredTasks.length !== totalTasksInGroups && (
-          <p style={{color: 'red', fontSize: '0.8rem'}}>
-            Warning: Task count mismatch! Some tasks may have missing metadata.
-          </p>
-        )}
+        Total tasks: {tasks.length}
       </div>
     </>
   );
