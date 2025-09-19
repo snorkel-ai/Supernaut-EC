@@ -192,6 +192,14 @@ header h1 {
   line-height: 1.4;
 }
 
+.task-id-small {
+  font-size: 0.75rem;
+  color: #6c757d;
+  font-family: 'Monaco', 'Consolas', monospace;
+  margin-top: 4px;
+  opacity: 0.8;
+}
+
 .task-meta {
   display: flex;
   gap: 20px;
@@ -976,6 +984,19 @@ header h1 {
   color: #495057;
   line-height: 1.5;
   font-size: 0.9rem;
+}
+
+.empty-field {
+  color: #6c757d;
+  font-style: italic;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.edit-model-label {
+  font-weight: bold;
+  color: #495057;
+  margin-bottom: 8px;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
 /* Responsive Design */

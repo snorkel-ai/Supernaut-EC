@@ -164,6 +164,9 @@ function App() {
                                         <h3 className="task-prompt">
                                           {task.conversation?.turns?.[0]?.messages?.[0]?.content || task.task_id}
                                         </h3>
+                                        <div className="task-id-small">
+                                          {task.task_id}
+                                        </div>
                                       </div>
                                     </div>
                                   ))}

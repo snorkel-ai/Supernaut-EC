@@ -213,24 +213,41 @@ const DetailedTaskView: React.FC<DetailedTaskViewProps> = ({ task, onBack }) => 
                     )}
 
                     {/* Failure Explanation */}
-                    {turn.failure_explanation && (
-                      <div className="failure-explanation-section">
-                        <div className="failure-label">Failure Explanation:</div>
-                        <div className="failure-text">{turn.failure_explanation}</div>
+                    <div className="failure-explanation-section">
+                      <div className="failure-label">Failure Explanation:</div>
+                      <div className="failure-text">
+                        {turn.failure_explanation || <em className="empty-field">No failure explanation provided</em>}
                       </div>
-                    )}
+                    </div>
 
                     {/* Edited Response Section */}
-                    {(turn.model_a_edited !== 'N/A' || turn.model_b_edited !== 'N/A') && (
-                      <div className="edited-response-section">
-                        <div className="edited-label">
-                          {turn.model_a_edited !== 'N/A' ? 'Model A Edited Response' : 'Model B Edited Response'}
-                        </div>
-                        <div className="edited-content">
-                          {turn.model_a_edited !== 'N/A' ? turn.model_a_edited : turn.model_b_edited}
-                        </div>
+                    <div className="edited-response-section">
+                      <div className="edited-label">Edited Response:</div>
+                      <div className="edited-content">
+                        {(() => {
+                          const hasModelAEdit = turn.model_a_edited && turn.model_a_edited !== 'N/A' && turn.model_a_edited.trim() !== '';
+                          const hasModelBEdit = turn.model_b_edited && turn.model_b_edited !== 'N/A' && turn.model_b_edited.trim() !== '';
+                          
+                          if (hasModelAEdit) {
+                            return (
+                              <div>
+                                <div className="edit-model-label">Model A:</div>
+                                <div style={{ whiteSpace: 'pre-wrap' }}>{turn.model_a_edited}</div>
+                              </div>
+                            );
+                          } else if (hasModelBEdit) {
+                            return (
+                              <div>
+                                <div className="edit-model-label">Model B:</div>
+                                <div style={{ whiteSpace: 'pre-wrap' }}>{turn.model_b_edited}</div>
+                              </div>
+                            );
+                          } else {
+                            return <em className="empty-field">No edited response provided</em>;
+                          }
+                        })()}
                       </div>
-                    )}
+                    </div>
                   </div>
                 </div>
               )}
