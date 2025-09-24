@@ -18,6 +18,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./supernaut
 
     steps:
     - name: Checkout
@@ -28,13 +31,12 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
-        cache-dependency-path: 'supernaut/package-lock.json'
 
     - name: Install dependencies
-      run: cd supernaut && npm ci
+      run: npm ci
 
     - name: Build
-      run: cd supernaut && npm run build
+      run: npm run build
 
     - name: Setup Pages
       uses: actions/configure-pages@v4
@@ -42,7 +44,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: ./supernaut/build
+        path: ./build
 
   deploy:
     environment:
