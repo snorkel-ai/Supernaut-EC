@@ -47,20 +47,26 @@ function App() {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [importedTasks, setImportedTasks] = useState<Task[]>([]);
   useEffect(() => {
-    fetch(`${process.env.PUBLIC_URL}/data.json`)
+    const dataUrl = `${process.env.PUBLIC_URL}/data.json`;
+    console.log('Attempting to fetch from:', dataUrl);
+    console.log('PUBLIC_URL:', process.env.PUBLIC_URL);
+    
+    fetch(dataUrl)
       .then(response => {
+        console.log('Fetch response:', response.status, response.statusText);
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
         return response.json();
       })
       .then(data => {
+        console.log('Data loaded successfully, tasks count:', data.length);
         setTasks(data);
         setLoading(false);
       })
       .catch(err => {
         console.error('Data loading error:', err);
-        setError(`Failed to load data: ${err.message}`);
+        setError(`Failed to load data: ${err.message} (URL: ${dataUrl})`);
         setLoading(false);
       });
   }, []);
@@ -93,7 +99,19 @@ function App() {
   }, {});
 
   if (loading) return <div className="loading">Loading...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (error) return (
+    <div className="error">
+      <h2>Error Loading Data</h2>
+      <p>{error}</p>
+      <p><strong>Debug Info:</strong></p>
+      <ul>
+        <li>PUBLIC_URL: {process.env.PUBLIC_URL || '(empty)'}</li>
+        <li>Data URL: {process.env.PUBLIC_URL}/data.json</li>
+        <li>Current location: {window.location.href}</li>
+      </ul>
+      <p>Check browser console for more details.</p>
+    </div>
+  );
 
   const renderTasksView = () => (
     <>
