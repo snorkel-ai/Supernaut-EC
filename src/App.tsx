@@ -47,14 +47,20 @@ function App() {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [importedTasks, setImportedTasks] = useState<Task[]>([]);
   useEffect(() => {
-    fetch('./data.json')
-      .then(response => response.json())
+    fetch(`${process.env.PUBLIC_URL}/data.json`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        return response.json();
+      })
       .then(data => {
         setTasks(data);
         setLoading(false);
       })
       .catch(err => {
-        setError('Failed to load data');
+        console.error('Data loading error:', err);
+        setError(`Failed to load data: ${err.message}`);
         setLoading(false);
       });
   }, []);
